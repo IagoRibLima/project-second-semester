@@ -17,14 +17,15 @@ public class Main {
             System.out.println("4- Mostrar Lista de Anime");
             System.out.println("5- Sair");
 
-            int op = sc.nextInt();
+            String op = sc.next();
 
-            if (op == 1){
+            if (op.equalsIgnoreCase("1") || op.equalsIgnoreCase("cadastrar")){
+
                 Anime novoAnime = Anime.cadastrarAnime(sc);
                 listaAnime.add(novoAnime);
                 System.out.println();
 
-            }else if (op == 2){
+            }else if (op.equalsIgnoreCase("2") || op.equalsIgnoreCase("pesquisar")){
                 System.out.print("Qual Anime deseja buscar: ");
                 sc.nextLine();
                 String busca = sc.nextLine();
@@ -47,7 +48,7 @@ public class Main {
                     System.out.println();
                 }
 
-            }else if (op == 3){
+            }else if (op.equalsIgnoreCase("3") || op.equalsIgnoreCase("alterar")){
                 System.out.print("Qual Anime deseja alterar: ");
                 sc.nextLine();
                 String busca = sc.nextLine();
@@ -96,13 +97,12 @@ public class Main {
                 }
 
 
-            }else if (op == 4){
+            }else if (op.equalsIgnoreCase("4") || op.equalsIgnoreCase("mostrar")){
                 for (Anime mostrar : listaAnime){
                     mostrar.mostrarAnime();
                     System.out.println();
                 }
-
-            }else if (op == 5){
+            }else if (op.equalsIgnoreCase("5") || op.equalsIgnoreCase("sair")){
                 System.out.println("Saindo...");
                 break;
             }else System.out.println("Opção invalida");

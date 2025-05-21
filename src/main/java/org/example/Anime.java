@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.text.Normalizer;
 
@@ -7,11 +8,11 @@ public class Anime {
     //Cadastro dos animes
     public String nome;
     public String comentario;
-    public int nota;
-    public int numero;
+    public String nota;
+    public String numero;
 
     //Construtor para acessar a classe
-    public Anime(String nome, String comentario, int nota, int numero) {
+    public Anime(String nome, String comentario, String nota, String numero) {
         this.nome = nome;
         this.comentario = comentario;
         this.nota = nota;
@@ -28,11 +29,12 @@ public class Anime {
         String comentario = sc.nextLine();
 
         System.out.print("Nota: ");
-        int nota = sc.nextInt();
+        String nota = sc.next();
 
         System.out.print("Numero: ");
-        int numero = sc.nextInt();
+        String numero = sc.next();
         sc.nextLine(); //Limpa Buffer (até aqui tem que limpar essa merda)
+
 
         return new Anime(nome, comentario, nota, numero);
     }
@@ -61,10 +63,10 @@ public class Anime {
         return comentario;
     }
 
-    public static int alterarNota(int nota){
+    public static String alterarNota(String nota){
         Scanner sc = new Scanner(System.in);
         System.out.print("Infome a nota: ");
-        nota = sc.nextInt();
+        nota = sc.next();
         return nota;
     }
 
