@@ -1,0 +1,11 @@
+[33mcommit acd57add8a659458adda2c0047defb6c5584028a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mTRY_CATCH[m[33m)[m
+Author: IagoRibLima <iagolima40028922@gmail.com>
+Date:   Wed May 21 10:59:40 2025 -0300
+
+    mudança de variáveis int para String, para previnir possíveis erros  de entrada de dados
+
+[33mcommit 3c433ac25c7f22ed7532e220838824b09da8f86d[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: IagoRibLima <iagolima40028922@gmail.com>
+Date:   Mon May 19 21:42:56 2025 -0300
+
+    iniciando projeto
