@@ -8,14 +8,12 @@ public class Anime {
     public String nome;
     public String comentario;
     public String nota;
-    public String numero;
 
     //Construtor para acessar a classe
-    public Anime(String nome, String comentario, String nota, String numero) {
+    public Anime(String nome, String comentario, String nota) {
         this.nome = nome;
         this.comentario = comentario;
         this.nota = nota;
-        this.numero = numero;
     }
 
     //Métodos
@@ -29,20 +27,16 @@ public class Anime {
 
         System.out.print("Nota: ");
         String nota = sc.next();
-
-        System.out.print("Numero: ");
-        String numero = sc.next();
         sc.nextLine(); //Limpa Buffer (até aqui tem que limpar essa merda)
 
 
-        return new Anime(nome, comentario, nota, numero);
+        return new Anime(nome, comentario, nota);
     }
 
     public void mostrarAnime() {
         System.out.println("Nome: " + nome);
         System.out.println("Comentário: " + comentario);
         System.out.println("Nota: " + nota);
-        System.out.println("Número: " + numero);
         System.out.println();
         System.out.println("--------------------------------------------");
         System.out.println();
