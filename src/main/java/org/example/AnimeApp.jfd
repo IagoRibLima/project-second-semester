@@ -5,7 +5,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "hidemode 3"
-			"$columnConstraints": "[fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill]"
+			"$columnConstraints": "[fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill]"
 			"$rowConstraints": "[][][][][][][][][][][][][][][][][][][][][]"
 		} ) {
 			name: "this"
@@ -25,13 +25,13 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textFieldName"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 2 27 1"
+				"value": "cell 3 2 29 1"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "buttonClean"
 				"text": "Limpar Campos"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 30 2"
+				"value": "cell 32 2"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelNota"
@@ -42,13 +42,13 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textFieldNota"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 3 27 1"
+				"value": "cell 3 3 29 1"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "buttonRemove"
 				"text": "Remover Selecionado"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 30 3"
+				"value": "cell 32 3"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelComentario"
@@ -59,13 +59,13 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textFieldComentario"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 4 27 1"
+				"value": "cell 3 4 29 1"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "buttonAdd"
 				"text": "Adicionar Item"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 30 4"
+				"value": "cell 32 4"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelItens"
@@ -79,7 +79,19 @@ new FormModel {
 					name: "list1"
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 7 30 13"
+				"value": "cell 1 7 32 11"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonCarregar"
+				"text": "Carregar Arquivo"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 21 18"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "buttonAtualizar"
+				"text": "Atualizar Arquivo"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 22 18"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 135, 35 )

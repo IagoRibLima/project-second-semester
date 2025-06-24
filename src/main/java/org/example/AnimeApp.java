@@ -33,6 +33,8 @@ public class AnimeApp extends JFrame {
         labelItens = new JLabel();
         scrollPaneItens = new JScrollPane();
         list1 = new JList();
+        buttonCarregar = new JButton();
+        buttonAtualizar = new JButton();
 
         //======== this ========
         setTitle("Gerenciador de Animes");
@@ -40,6 +42,8 @@ public class AnimeApp extends JFrame {
         contentPane.setLayout(new MigLayout(
             "hidemode 3",
             // columns
+            "[fill]" +
+            "[fill]" +
             "[fill]" +
             "[fill]" +
             "[fill]" +
@@ -102,29 +106,29 @@ public class AnimeApp extends JFrame {
         //---- labelName ----
         labelName.setText("Nome:");
         contentPane.add(labelName, "cell 1 2");
-        contentPane.add(textFieldName, "cell 3 2 27 1");
+        contentPane.add(textFieldName, "cell 3 2 29 1");
 
         //---- buttonClean ----
         buttonClean.setText("Limpar Campos");
-        contentPane.add(buttonClean, "cell 30 2");
+        contentPane.add(buttonClean, "cell 32 2");
 
         //---- labelNota ----
         labelNota.setText("Nota:");
         contentPane.add(labelNota, "cell 1 3");
-        contentPane.add(textFieldNota, "cell 3 3 27 1");
+        contentPane.add(textFieldNota, "cell 3 3 29 1");
 
         //---- buttonRemove ----
         buttonRemove.setText("Remover Selecionado");
-        contentPane.add(buttonRemove, "cell 30 3");
+        contentPane.add(buttonRemove, "cell 32 3");
 
         //---- labelComentario ----
         labelComentario.setText("Coment\u00e1rio:");
         contentPane.add(labelComentario, "cell 1 4");
-        contentPane.add(textFieldComentario, "cell 3 4 27 1");
+        contentPane.add(textFieldComentario, "cell 3 4 29 1");
 
         //---- buttonAdd ----
         buttonAdd.setText("Adicionar Item");
-        contentPane.add(buttonAdd, "cell 30 4");
+        contentPane.add(buttonAdd, "cell 32 4");
 
         //---- labelItens ----
         labelItens.setText("Itens da Cole\u00e7\u00e3o");
@@ -134,7 +138,15 @@ public class AnimeApp extends JFrame {
         {
             scrollPaneItens.setViewportView(list1);
         }
-        contentPane.add(scrollPaneItens, "cell 1 7 30 13");
+        contentPane.add(scrollPaneItens, "cell 1 7 32 11");
+
+        //---- buttonCarregar ----
+        buttonCarregar.setText("Carregar Arquivo");
+        contentPane.add(buttonCarregar, "cell 21 18");
+
+        //---- buttonAtualizar ----
+        buttonAtualizar.setText("Atualizar Arquivo");
+        contentPane.add(buttonAtualizar, "cell 22 18");
         pack();
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
@@ -155,5 +167,7 @@ public class AnimeApp extends JFrame {
     private JLabel labelItens;
     private JScrollPane scrollPaneItens;
     private JList list1;
+    private JButton buttonCarregar;
+    private JButton buttonAtualizar;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
