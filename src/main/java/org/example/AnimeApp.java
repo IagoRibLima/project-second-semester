@@ -6,11 +6,11 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AnimeApp extends JFrame {
-    //Componentes da UI
     private JLabel labelDetails;
     private JLabel labelName;
     private JLabel labelNota;
@@ -34,6 +34,8 @@ public class AnimeApp extends JFrame {
     private JLabel statusLabel;
 
     private List<Anime> colecao;
+
+    private static final String ANIMETXT = "./src/main/java/org/example/animes.txt";
 
     public AnimeApp(){
         setTitle("Gerenciador de Animes");
@@ -271,11 +273,8 @@ public class AnimeApp extends JFrame {
         gbc.gridy = 6; rightButtonsPanel.add(buttonAtualizar, gbc);
 
         listAndButtonsPanel.add(rightButtonsPanel, BorderLayout.EAST);
-
         centralPanel.add(listAndButtonsPanel, BorderLayout.CENTER);
-
         backgroundPanel.add(centralPanel, BorderLayout.CENTER);
-
         backgroundPanel.add(statusLabel, BorderLayout.SOUTH);
     }
 
@@ -343,7 +342,30 @@ public class AnimeApp extends JFrame {
     }
 
     private void pesquisarItem(){
-
+        String termoBusca = textFieldBusca.getText().trim();
+        listModel.clear();
+        if (termoBusca.isEmpty()) {
+            for (Anime anime : colecao) {
+                listModel.addElement(anime);
+            }
+            statusLabel.setText("Exibindo todos os " + colecao.size() + " animes.");
+        } else {
+            int resultadosEncontrados = 0;
+            for (Anime anime : colecao) {
+                if (anime.getNome().toLowerCase().contains(termoBusca.toLowerCase()) ||
+                        anime.getComentario().toLowerCase().contains(termoBusca.toLowerCase())) {
+                    listModel.addElement(anime);
+                    resultadosEncontrados++;
+                }
+            }
+            if (resultadosEncontrados > 0) {
+                statusLabel.setText(resultadosEncontrados + " resultado(s) encontrado(s) para '" + termoBusca + "'.");
+            } else {
+                statusLabel.setText("Nenhum anime encontrado com o termo '" + termoBusca + "'.");
+            }
+        }
+        itemList.repaint();
+        scrollPaneItens.repaint();
     }
 
     private void adicionarItem(){
@@ -381,8 +403,6 @@ public class AnimeApp extends JFrame {
         colecao.add(novoItem);
 
         atualizarListaVisual();
-        itemList.repaint();
-        scrollPaneItens.repaint();
         limparCamposDeEntrada();
         textFieldName.requestFocus();
         statusLabel.setText("Item '" + nome + "' adicionado com sucesso!");
@@ -401,8 +421,6 @@ public class AnimeApp extends JFrame {
             if (confirmacao == JOptionPane.YES_OPTION){
                 colecao.remove(selectedIndex);
                 atualizarListaVisual();
-                itemList.repaint();
-                scrollPaneItens.repaint();
                 limparCamposDeEntrada();
                 statusLabel.setText("Item '" + itemRemovido.getNome() + "' removido.");
                 buttonRemove.setEnabled(true);
@@ -421,7 +439,72 @@ public class AnimeApp extends JFrame {
     }
 
     private void editarItem(){
+        int selectedIndex = itemList.getSelectedIndex();
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Nenhum anime selecionado para editar.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
+            statusLabel.setText("Nenhum anime selecionado para editar.");
+            return;
+        }
 
+        Anime selectedAnimeFromList = itemList.getSelectedValue();
+        Anime itemParaEditar = null;
+        for (Anime anime : colecao) {
+            if (anime.equals(selectedAnimeFromList)) {
+                itemParaEditar = anime;
+                break;
+            }
+        }
+
+        if (itemParaEditar == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Item selecionado não encontrado na coleção principal. Tente pesquisar novamente e selecionar.",
+                    "Erro de Edição",
+                    JOptionPane.ERROR_MESSAGE);
+            statusLabel.setText("Erro ao encontrar item para edição.");
+            return;
+        }
+
+        String nome = textFieldName.getText().trim();
+        String nota = textFieldNota.getText().trim();
+        String comentario = textFieldComentario.getText().trim();
+
+        if (nome.isEmpty()){
+            JOptionPane.showMessageDialog(this,
+                    "O campo 'Nome' não pode estar vazio.",
+                    "Erro de Validação",
+                    JOptionPane.ERROR_MESSAGE);
+            textFieldName.requestFocus();
+            statusLabel.setText("Erro: Nome é obrigatório para edição.");
+            return;
+        }
+        try {
+            double notaNumerica = Double.parseDouble(nota);
+            if (notaNumerica < 0 || notaNumerica > 10) {
+                JOptionPane.showMessageDialog(this,
+                        "A nota deve ser entre 0 e 10!",
+                        "Erro de Validação",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "A nota deve ser um número válido!",
+                    "Erro de Validação",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Atualiza os dados do item
+        itemParaEditar.setNome(nome);
+        itemParaEditar.setNota(nota);
+        itemParaEditar.setComentario(comentario);
+
+        statusLabel.setText("Anime '" + nome + "' atualizado com sucesso!");
+        atualizarListaVisual();
+        limparCamposDeEntrada();
     }
 
     private void limparCamposDeEntrada(){
@@ -432,15 +515,57 @@ public class AnimeApp extends JFrame {
         itemList.clearSelection();
         textFieldName.requestFocus();
         statusLabel.setText("Campos limpos");
-        buttonRemove.setEnabled(true);
     }
 
     private void carregarArquivo(){
+        File arquivoDados = new File(ANIMETXT);
 
+        if (!arquivoDados.exists()) {
+            statusLabel.setText("Arquivo de dados '" + ANIMETXT + "' não encontrado. Iniciando com coleção vazia.");
+            colecao.clear();
+            atualizarListaVisual();
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(arquivoDados))) {
+            colecao.clear();
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] partes = linha.split(",");
+                if (partes.length == 3) {
+                    colecao.add(new Anime(partes[0], partes[1], partes[2]));
+                }
+            }
+            atualizarListaVisual();
+            limparCamposDeEntrada(); // Opcional: limpa campos após carregar
+            statusLabel.setText("Dados carregados de '" + ANIMETXT + "'. Total: " + colecao.size() + " animes.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao carregar o arquivo '" + ANIMETXT + "': " + e.getMessage(),
+                    "Erro de Leitura",
+                    JOptionPane.ERROR_MESSAGE);
+            statusLabel.setText("Erro ao carregar arquivo de dados.");
+            e.printStackTrace();
+        }
     }
 
     private void atualizarArquivo(){
+        File arquivoDados = new File(ANIMETXT);
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoDados))) {
+            for (Anime anime : colecao) {
+                writer.write(anime.getNome() + "," + anime.getNota() + "," + anime.getComentario());
+                writer.newLine();
+            }
+            statusLabel.setText("Dados salvos em '" + ANIMETXT + "'. Total: " + colecao.size() + " animes.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao salvar o arquivo '" + ANIMETXT + "': " + e.getMessage(),
+                    "Erro de Escrita",
+                    JOptionPane.ERROR_MESSAGE);
+            statusLabel.setText("Erro ao salvar arquivo de dados.");
+            e.printStackTrace();
+        }
     }
 
     private void carregarItemSelecionadoNosCampos(){
@@ -449,7 +574,7 @@ public class AnimeApp extends JFrame {
             textFieldName.setText(itemSelecionado.getNome());
             textFieldNota.setText(itemSelecionado.getNota());
             textFieldComentario.setText(itemSelecionado.getComentario());
-            statusLabel.setText("Item '" + itemSelecionado.getNome() + "' carregado para edição.");
+            statusLabel.setText("Item '" + itemSelecionado.getNome() + "' carregado para edição ou exclusão.");
         }
     }
 
@@ -458,6 +583,8 @@ public class AnimeApp extends JFrame {
         for (Anime item : colecao){
             listModel.addElement(item);
         }
+        itemList.repaint();
+        scrollPaneItens.repaint();
     }
 
     private ImageIcon loadImageIcon (String path){
